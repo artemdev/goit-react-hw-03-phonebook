@@ -7,7 +7,7 @@ import Filter from './components/filter'
 
 const localContacts = JSON.parse(localStorage.getItem('contacts'))
 const INITIAL_STATE = {
-    contacts: (([...localContacts].length > 0) && [...localContacts]) || [
+    contacts: (localContacts && ([...localContacts].length > 0) && [...localContacts]) || [
         { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
         { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
         { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
