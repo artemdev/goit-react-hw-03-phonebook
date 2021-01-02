@@ -5,9 +5,11 @@ import ContactList from './components/contactList'
 import ContactForm from './components/contactForm'
 import Filter from './components/filter'
 
-const localContacts = JSON.parse(localStorage.getItem('contacts'))
+const storedLocalContacts = JSON.parse(localStorage.getItem('contacts'))
+const localContacts = storedLocalContacts && ([...storedLocalContacts].length > 0) && [...storedLocalContacts]
+
 const INITIAL_STATE = {
-    contacts: (localContacts && ([...localContacts].length > 0) && [...localContacts]) || [
+    contacts: localContacts || [
         { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
         { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
         { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
@@ -41,10 +43,7 @@ class App extends Component {
             number: number.value,
             contacts: [...this.state.contacts, contact]
         })
-        console.log(JSON.stringify(newContacts))
         localStorage.setItem('contacts', JSON.stringify(newContacts))
-        // newContacts.map(item => localStorage.setItem(item.id, JSON.stringify(item))
-        // localStorage.setItem('contacts', [...newContacts])
     }
 
     deleteContact = (id) => {
