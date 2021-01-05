@@ -38,14 +38,15 @@ class App extends Component {
         }
         const newContacts = [...this.state.contacts, contact]
 
-        this.setState({
-            name: name.value,
-            number: number.value,
-            contacts: [...this.state.contacts, contact]
+        this.setState(prevState => {
+            return {
+                name: name.value,
+                number: number.value,
+                contacts: [...prevState.contacts, contact]
+            }
         })
         localStorage.setItem('contacts', JSON.stringify(newContacts))
     }
-
     deleteContact = (id) => {
         const newContacts = this.state.contacts.filter(contact => contact.id !== id)
         this.setState({ ...this.state, contacts: [...newContacts] })
@@ -53,16 +54,17 @@ class App extends Component {
         localStorage.setItem('contacts', JSON.stringify(newContacts))
     }
 
-    showResults = () => {
-        console.log(INITIAL_STATE)
-        return this.state.contacts.filter(item => item.name.toLowerCase().includes(this.state.filter)).map((item, index) =>
-            <div key={shortid.generate()}> {item.name} {item.number} <button onClick={() => this.deleteContact(item.id)}>delete</button></ div>)
 
+
+    contacts = () => {
+        return this.state.contacts.filter(item => item.name.toLowerCase().includes(this.state.filter))
     }
 
     changeFilter = (e) => {
         const { value } = e.target
-        this.setState({ ...this.state, filter: value.toLowerCase() })
+        this.setState(prevState => {
+            return { ...prevState, filter: value.toLowerCase() }
+        })
     }
 
     //name validation
@@ -76,11 +78,16 @@ class App extends Component {
     }
 
     render() {
+        const contactListProps = {
+            contacts: this.contacts(),
+            deleteContact: this.deleteContact
+        }
+
         return (
             <div>
                 <ContactForm addContact={this.addContact} />
                 <Filter changeFilter={this.changeFilter} />
-                <ContactList showResults={this.showResults} />
+                <ContactList {...contactListProps} />
             </div>
         )
     }
