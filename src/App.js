@@ -50,7 +50,6 @@ class App extends Component {
     deleteContact = (id) => {
         const newContacts = this.state.contacts.filter(contact => contact.id !== id)
         this.setState({ ...this.state, contacts: [...newContacts] })
-
         localStorage.setItem('contacts', JSON.stringify(newContacts))
     }
 
